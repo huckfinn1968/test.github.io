@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>NIDS Cube</title>
+  <meta content="" name="descriptison">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="assets/img/favicon.png" rel="icon">
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Roboto:300,300i,400,400i,500,500i,700,700i&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/animate.css/animate.min.css" rel="stylesheet">
+  <link href="assets/vendor/icofont/icofont.min.css" rel="stylesheet">
+  <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="assets/vendor/venobox/venobox.css" rel="stylesheet">
+  <link href="assets/vendor/owl.carousel/assets/owl.carousel.min.css" rel="stylesheet">
+  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="assets/css/style.css" rel="stylesheet">
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.js" type="text/javascript"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+      <script>
+        //generar el identificador de coneccion al broker
+        var clientId = 'cliend_id_' + Math.floor((Math.random() * 1000000) + 1);
+    var host = "soldier.cloudmqtt.com";
+    var port = 35954;
+    client = new Paho.MQTT.Client(host, port,clientId);
+    
+
+    //acceso a el servidor
+    var usuario = "hrxjlags";
+    var miPass = "xYyTw1EohOQC";
+    
+    var options = {
+      useSSL: true,
+      userName: usuario,
+      password: miPass,
+      onSuccess:onConnect,
+      onFailure:doFail
+    }
+    
+    //funcion para conectar un cliente con broker
+    client.connect(options); 
+
+    function onConnect() {
+      console.log("Conexion Exitosa");
+      $("#status").html("Conexion Establecida");
+      client.subscribe('Salida');
+      client.subscribe('Entrada');
+     }
+     
+     function doFail(e){
+      console.log(e);
+     }
+
+     // si hay un error llama a esta funcion
+    function onConnectionLost(responseObject) {
+      if (responseObject.errorCode !== 0) {
+        console.log("onConnectionLost:" + responseObject.errorMessage);
+      }
+    }
+    
+    //con esta funcion estamos mandamdo mensajes al servidor que a su vez lo enviara al backend
+    function command(value) {
+      console.log(value);
+      message = new Paho.MQTT.Message(value + "");
+      message.destinationName = "Entrada";
+      client.send(message);
+    }
+    
+    client.onConnectionLost = onConnectionLost;
+	   </script>
+</head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="fixed-top ">
+    <div class="container">
+
+      <div class="logo float-left">
+        <h1 class="text-light"><a href="index.html"><span>NIDS Cube</span></a></h1>
+        <!-- Uncomment below if you prefer to use an image logo -->
+        <!-- <a href="index.html"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
+      </div>
+
+      <nav class="nav-menu float-right d-none d-lg-block">
+        <ul>
+          <li><svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+width="64" height="64"
+viewBox="0 0 172 172"
+style=" fill:#000000;"><g transform="translate(4.988,4.988) scale(0.702,0.672)"><g fill="none" fill-rule="nonzero" stroke="none" stroke-width="none" stroke-linecap="butt" stroke-linejoin="none" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><g fill="#000000" stroke="#cccccc" stroke-width="10" stroke-linejoin="round"><path d="M161.25,5.375c2.96431,0 5.375,2.41069 5.375,5.375v32.25c0,2.96431 -2.41069,5.375 -5.375,5.375h-32.25c-2.96431,0 -5.375,-2.41069 -5.375,-5.375v-32.25c0,-2.96431 2.41069,-5.375 5.375,-5.375zM129,43h32.25525l-0.00525,-32.25h-32.25zM89.80029,19.08545l22.80176,22.80176c2.09625,2.09625 2.09625,5.50433 0,7.60058l-22.80176,22.80176c-1.04812,1.04812 -2.42429,1.57471 -3.80029,1.57471c-1.376,0 -2.75217,-0.52658 -3.80029,-1.57471l-22.80176,-22.80176c-2.09625,-2.09625 -2.09625,-5.50433 0,-7.60058l22.80176,-22.80176c1.04678,-1.04812 2.42362,-1.57471 3.80029,-1.57471c1.37667,0 2.75351,0.52658 3.80029,1.57471zM63.19824,45.6875l22.80701,22.80701l22.79651,-22.80701l-22.80176,-22.80176zM43,48.375c2.96431,0 5.375,2.41069 5.375,5.375v32.25h32.25c2.96431,0 5.375,2.41069 5.375,5.375v32.25h32.25c2.96431,0 5.375,2.41069 5.375,5.375v32.25c0,2.96431 -2.41069,5.375 -5.375,5.375h-32.25c-0.98363,0 -1.89469,-0.28311 -2.6875,-0.74536c-0.79281,0.46225 -1.70387,0.74536 -2.6875,0.74536h-32.25c-0.98362,0 -1.89469,-0.28311 -2.6875,-0.74536c-0.79281,0.46225 -1.70388,0.74536 -2.6875,0.74536h-32.25c-2.96431,0 -5.375,-2.41069 -5.375,-5.375v-32.25c0,-0.98362 0.28311,-1.89469 0.74536,-2.6875c-0.46225,-0.79281 -0.74536,-1.70387 -0.74536,-2.6875v-32.25c0,-0.98363 0.28311,-1.89469 0.74536,-2.6875c-0.46225,-0.79281 -0.74536,-1.70387 -0.74536,-2.6875v-32.25c0,-2.96431 2.41069,-5.375 5.375,-5.375zM10.75,86h32.25525l-0.00525,-32.25h-32.25zM144.01746,64.89368c1.34913,0.49181 2.42131,1.48123 3.02869,2.78198l13.62646,29.22656c0.60737,1.30344 0.67553,2.76611 0.18372,4.11523c-0.49181,1.34913 -1.48123,2.42131 -2.78198,3.02869l-29.22656,13.62646c-0.72294,0.33594 -1.49358,0.50915 -2.26758,0.50915c-0.62081,0 -1.24041,-0.113 -1.84241,-0.33069c-1.34913,-0.49181 -2.42656,-1.47598 -3.03393,-2.77673l-13.62646,-29.22656c-0.60738,-1.30344 -0.67028,-2.76611 -0.17847,-4.11523c0.49181,-1.34913 1.47598,-2.42131 2.77673,-3.02869l29.22656,-13.62646c0.65172,-0.30369 1.34547,-0.47367 2.04187,-0.50391c0.6964,-0.03023 1.3988,0.07563 2.07337,0.32019zM112.94849,83.57495l13.62646,29.22656l29.23181,-13.62646l-13.63171,-29.22656zM10.75,123.625h32.25v-32.25h-32.25zM48.375,123.625h32.25525l-0.00525,-32.25h-32.25zM10.75,161.25h32.25v-32.25h-32.25zM48.375,161.25h32.25v-32.25h-32.25zM86,161.25h32.25525l-0.00525,-32.25h-32.25zM21.5,147.8125v5.375c0,1.4835 -1.204,2.6875 -2.6875,2.6875c-1.4835,0 -2.6875,-1.204 -2.6875,-2.6875v-5.375c0,-1.4835 1.204,-2.6875 2.6875,-2.6875c1.4835,0 2.6875,1.204 2.6875,2.6875zM34.9375,147.8125v5.375c0,1.4835 -1.204,2.6875 -2.6875,2.6875c-1.4835,0 -2.6875,-1.204 -2.6875,-2.6875v-5.375c0,-1.4835 1.204,-2.6875 2.6875,-2.6875c1.4835,0 2.6875,1.204 2.6875,2.6875zM59.125,147.8125v5.375c0,1.4835 -1.204,2.6875 -2.6875,2.6875c-1.4835,0 -2.6875,-1.204 -2.6875,-2.6875v-5.375c0,-1.4835 1.204,-2.6875 2.6875,-2.6875c1.4835,0 2.6875,1.204 2.6875,2.6875zM72.5625,147.8125v5.375c0,1.4835 -1.204,2.6875 -2.6875,2.6875c-1.4835,0 -2.6875,-1.204 -2.6875,-2.6875v-5.375c0,-1.4835 1.204,-2.6875 2.6875,-2.6875c1.4835,0 2.6875,1.204 2.6875,2.6875zM96.75,147.8125v5.375c0,1.4835 -1.204,2.6875 -2.6875,2.6875c-1.4835,0 -2.6875,-1.204 -2.6875,-2.6875v-5.375c0,-1.4835 1.204,-2.6875 2.6875,-2.6875c1.4835,0 2.6875,1.204 2.6875,2.6875zM110.1875,147.8125v5.375c0,1.4835 -1.204,2.6875 -2.6875,2.6875c-1.4835,0 -2.6875,-1.204 -2.6875,-2.6875v-5.375c0,-1.4835 1.204,-2.6875 2.6875,-2.6875c1.4835,0 2.6875,1.204 2.6875,2.6875z"></path></g><path d="M0,172v-172h172v172z" fill="none" stroke="none" stroke-width="1" stroke-linejoin="miter"></path><g fill="#ffffff" stroke="none" stroke-width="1" stroke-linejoin="miter"><path d="M129,5.375c-2.96431,0 -5.375,2.41069 -5.375,5.375v32.25c0,2.96431 2.41069,5.375 5.375,5.375h32.25c2.96431,0 5.375,-2.41069 5.375,-5.375v-32.25c0,-2.96431 -2.41069,-5.375 -5.375,-5.375zM129,10.75h32.25l0.00525,32.25h-32.25525zM86,17.51074c-1.37667,0 -2.75351,0.52658 -3.80029,1.57471l-22.80176,22.80176c-2.09625,2.09625 -2.09625,5.50434 0,7.60058l22.80176,22.80176c1.04812,1.04812 2.42429,1.57471 3.80029,1.57471c1.376,0 2.75217,-0.52658 3.80029,-1.57471l22.80176,-22.80176c2.09625,-2.09625 2.09625,-5.50433 0,-7.60058l-22.80176,-22.80176c-1.04678,-1.04812 -2.42362,-1.57471 -3.80029,-1.57471zM86,22.88574l22.80176,22.80176l-22.79651,22.80701l-22.80701,-22.80701zM10.75,48.375c-2.96431,0 -5.375,2.41069 -5.375,5.375v32.25c0,0.98363 0.28311,1.89469 0.74536,2.6875c-0.46225,0.79281 -0.74536,1.70387 -0.74536,2.6875v32.25c0,0.98363 0.28311,1.89469 0.74536,2.6875c-0.46225,0.79281 -0.74536,1.70388 -0.74536,2.6875v32.25c0,2.96431 2.41069,5.375 5.375,5.375h32.25c0.98362,0 1.89469,-0.28311 2.6875,-0.74536c0.79281,0.46225 1.70388,0.74536 2.6875,0.74536h32.25c0.98363,0 1.89469,-0.28311 2.6875,-0.74536c0.79281,0.46225 1.70387,0.74536 2.6875,0.74536h32.25c2.96431,0 5.375,-2.41069 5.375,-5.375v-32.25c0,-2.96431 -2.41069,-5.375 -5.375,-5.375h-32.25v-32.25c0,-2.96431 -2.41069,-5.375 -5.375,-5.375h-32.25v-32.25c0,-2.96431 -2.41069,-5.375 -5.375,-5.375zM10.75,53.75h32.25l0.00525,32.25h-0.00525h-32.25zM141.94409,64.57349c-0.6964,0.03023 -1.39015,0.20022 -2.04187,0.50391l-29.22656,13.62646c-1.30075,0.60738 -2.28492,1.67956 -2.77673,3.02869c-0.49181,1.34913 -0.42891,2.8118 0.17847,4.11523l13.62646,29.22656c0.60738,1.30075 1.68481,2.28492 3.03393,2.77673c0.602,0.21769 1.2216,0.33069 1.84241,0.33069c0.774,0 1.54464,-0.17322 2.26758,-0.50915l29.22656,-13.62646c1.30075,-0.60738 2.29017,-1.67956 2.78198,-3.02869c0.49181,-1.34913 0.42366,-2.8118 -0.18372,-4.11523l-13.62646,-29.22656c-0.60737,-1.30075 -1.67956,-2.29017 -3.02869,-2.78198c-0.67456,-0.24456 -1.37697,-0.35042 -2.07337,-0.32019zM142.17505,69.94849l13.63171,29.22656l-29.23181,13.62646l-13.62646,-29.22656zM10.75,91.375h32.25v32.25h-32.25zM48.375,91.375h32.25l0.00525,32.25h-0.00525h-32.25zM10.75,129h32.25v32.25h-32.25zM48.375,129h32.25v32.25h-32.25zM86,129h32.25l0.00525,32.25h-32.25525zM18.8125,145.125c-1.4835,0 -2.6875,1.204 -2.6875,2.6875v5.375c0,1.4835 1.204,2.6875 2.6875,2.6875c1.4835,0 2.6875,-1.204 2.6875,-2.6875v-5.375c0,-1.4835 -1.204,-2.6875 -2.6875,-2.6875zM32.25,145.125c-1.4835,0 -2.6875,1.204 -2.6875,2.6875v5.375c0,1.4835 1.204,2.6875 2.6875,2.6875c1.4835,0 2.6875,-1.204 2.6875,-2.6875v-5.375c0,-1.4835 -1.204,-2.6875 -2.6875,-2.6875zM56.4375,145.125c-1.4835,0 -2.6875,1.204 -2.6875,2.6875v5.375c0,1.4835 1.204,2.6875 2.6875,2.6875c1.4835,0 2.6875,-1.204 2.6875,-2.6875v-5.375c0,-1.4835 -1.204,-2.6875 -2.6875,-2.6875zM69.875,145.125c-1.4835,0 -2.6875,1.204 -2.6875,2.6875v5.375c0,1.4835 1.204,2.6875 2.6875,2.6875c1.4835,0 2.6875,-1.204 2.6875,-2.6875v-5.375c0,-1.4835 -1.204,-2.6875 -2.6875,-2.6875zM94.0625,145.125c-1.4835,0 -2.6875,1.204 -2.6875,2.6875v5.375c0,1.4835 1.204,2.6875 2.6875,2.6875c1.4835,0 2.6875,-1.204 2.6875,-2.6875v-5.375c0,-1.4835 -1.204,-2.6875 -2.6875,-2.6875zM107.5,145.125c-1.4835,0 -2.6875,1.204 -2.6875,2.6875v5.375c0,1.4835 1.204,2.6875 2.6875,2.6875c1.4835,0 2.6875,-1.204 2.6875,-2.6875v-5.375c0,-1.4835 -1.204,-2.6875 -2.6875,-2.6875z"></path></g><path d="" fill="none" stroke="none" stroke-width="1" stroke-linejoin="miter"></path></g></g></svg></li>
+        </ul>
+      </nav><!-- .nav-menu -->
+
+    </div>
+  </header><!-- End Header -->
+
+  <main id="main">
+
+    <!-- ======= Why Us Section ======= -->
+    <section class="why-us section-bg" data-aos="fade-up" date-aos-delay="200">
+      <div class="container">
+
+        <div class="row">
+          <div class="col-lg-6 video-box">
+            <img src="assets/img/IoT.png" class="img-fluid" alt="">
+            <a href="https://https://www.youtube.com/watch?v=IxgtaqnpSJQ" class="venobox play-btn mb-4" data-vbtype="video" data-autoplay="true"></a>
+          </div>
+
+          <div class="col-lg-6 d-flex flex-column justify-content-center p-5">
+
+            <div class="icon-box">
+              <div class="icon"><i class="bx bx-cube"></i></div>
+              <h4 class="title"><a href="">Propósito</a></h4>
+              <p class="description">El presente proyecto tiene como proposito mostrar la capacidad de la tecnología en combinación con la electrónica para crear Internet de las Cosas (IoT)</p>
+            </div>
+
+            <div class="icon-box">
+              <div class="icon"><i class="bx bx-tachometer"></i></div>
+              <h4 class="title"><a href="">Metas y Objetivos</a></h4>
+              <p class="description">Lograr consolidar imagenes distintas de figuras geométricas dentro de un cubo hecho por leds conectados entre si, logrando una arquitectura correcta y asi poder conectarse a internet a travez de la placa ESP 32 y ser capaz de controlar dichas figuras a travez de una aplicación web</p>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section><!-- End Why Us Section -->
+
+    <!-- ======= Services Section ======= -->
+    <section class="services">
+      <div class="container">
+
+        <div class="row">
+          <div class="col-md-6 col-lg-3 d-flex align-items-stretch" data-aos="fade-up">
+            <div class="icon-box icon-box-blue">
+              <div class="icon"><i class="bx bx-equalizer"></i></div>
+              <h4 class="title"><a href="">Piso 80´S</a></h4>
+              <p class="description">Figura: piso de luces magicas con leds</p>
+              <br>
+              <div align="center">
+              <button onclick="command('n')" type="button" class="btn btn-outline-primary">Mostrar</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-3 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="100">
+            <div class="icon-box icon-box-blue">
+              <div class="icon"><i class="bx bx-grid-alt"></i></div>
+              <h4 class="title"><a href="">Cubo al cubo</a></h4>
+              <p class="description">Figura: Cubo de leds que forma un cubo</p>
+              <br>
+               <div align="center">
+              <button onclick="command('l')" type="button" class="btn btn-outline-primary">Mostrar</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-3 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="200">
+            <div class="icon-box icon-box-blue">
+              <div class="icon"><i class="bx bx-pyramid"></i></div>
+              <h4 class="title"><a href="">Piramide Egipcia</a></h4>
+              <p class="description">Figura: piramide egipcia dentro del cubo</p>
+              <br>
+               <div align="center">
+              <button onclick="command('d')" type="button" class="btn btn-outline-primary">Mostrar</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-3 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="200">
+            <div class="icon-box icon-box-blue">
+              <div class="icon"><i class="bx bxs-planet"></i></div>
+              <h4 class="title"><a href="">Recorrido Espacial</a></h4>
+              <p class="description">Figura: recorrido lumnioso por todo el cubo</p>
+              <br>
+               <div align="center">
+              <button onclick="command('u')" type="button" class="btn btn-outline-primary">Mostrar</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+       
+          
+            <div class="row">
+          <div class="col-md-6 col-lg-3 d-flex align-items-stretch" data-aos="fade-up">
+            <div class="icon-box icon-box-blue">
+              <div class="icon"><i class="bx bx-anchor"></i></div>
+              <h4 class="title"><a href="">Ancla de mar</a></h4>
+              <p class="description">Figura: Ancla dentro del cubo iluminada</p>
+              <br>
+               <div align="center">
+              <button onclick="command('f')" type="button" class="btn btn-outline-primary">Mostrar</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-3 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="100">
+            <div class="icon-box icon-box-blue">
+              <div class="icon"><i class="bx bx-aperture"></i></div>
+              <h4 class="title"><a href="">Aro de Fuego</a></h4>
+              <p class="description">Figura: Circulo ilumninado con luces led</p>
+              <br>
+               <div align="center">
+              <button onclick="command('z')" type="button" class="btn btn-outline-primary">Mostrar</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-3 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="200">
+            <div class="icon-box icon-box-blue">
+              <div class="icon"><i class="bx bx-diamond"></i></div>
+              <h4 class="title"><a href="">Diamante </a></h4>
+              <p class="description">Figura: el brillo del diamante esta en los leds </p>
+              <br>
+               <div align="center">
+              <button onclick="command('g')" type="button" class="btn btn-outline-primary">Mostrar</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-3 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="200">
+            <div class="icon-box icon-box-blue">
+              <div class="icon"><i class="bx bxl-slack-old"></i></div>
+              <h4 class="title"><a href="">HashTag Vintage</a></h4>
+              <p class="description">Figura: Hashtag con luces led dentro del cubo</p>
+              <br>
+               <div align="center">
+              <button onclick="command('s')" type="button" class="btn btn-outline-primary">Mostrar</button>
+              </div>
+            </div>
+          </div>
+          
+           <div class="row">
+          <div class="col-md-6 col-lg-3 d-flex align-items-stretch" data-aos="fade-up">
+            <div class="icon-box icon-box-blue">
+              <div class="icon"><i class="bx bx-shape-square"></i></div>
+              <h4 class="title"><a href="">Muralla China</a></h4>
+              <p class="description">Figura: Ilumniacion de las columnas del cubo</p>
+              <br>
+               <div align="center">
+              <button onclick="command('a')" type="button" class="btn btn-outline-primary">Mostrar</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-3 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="100">
+            <div class="icon-box icon-box-blue">
+              <div class="icon"><i class="bx bx-link"></i></div>
+              <h4 class="title"><a href="">ADN Cubico</a></h4>
+              <p class="description">Figura: ADN cubico formado con luces led</p>
+              <br>
+               <div align="center">
+              <button onclick="command('k')" type="button" class="btn btn-outline-primary">Mostrar</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-3 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="200">
+            <div class="icon-box icon-box-blue">
+              <div class="icon"><i class="bx bx-cube"></i></div>
+              <h4 class="title"><a href="">Cubo Rubic</a></h4>
+              <p class="description">Figura: cubo pequeño dentro del cubo de leds</p>
+              <br>
+               <div align="center">
+              <button onclick="command('m')" type="button" class="btn btn-outline-primary">Mostrar</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-3 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="200">
+            <div class="icon-box icon-box-blue">
+              <div class="icon"><i class="bx bx-fridge"></i></div>
+              <h4 class="title"><a href="">Domino Sincodos</a></h4>
+              <p class="description">Figura: Domino ilumninado con luces led</p>
+              <br>
+               <div align="center">
+              <button onclick="command('c')" type="button" class="btn btn-outline-primary">Mostrar</button>
+              </div>
+            </div>
+          </div>
+
+           <div class="row">
+          <div class="col-md-6 col-lg-3 d-flex align-items-stretch" data-aos="fade-up">
+            <div class="icon-box icon-box-blue">
+              <div class="icon"><i class="bx bxl-magento"></i></div>
+              <h4 class="title"><a href="">Nancy</a></h4>
+              <p class="description">N: Inicial de la colaboradora Nancy</p>
+              <br>
+               <div align="center">
+              <button onclick="command('r')" type="button" class="btn btn-outline-primary">Mostrar</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-3 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="100">
+            <div class="icon-box icon-box-blue">
+              <div class="icon"><i class="bx bx-italic"></i></div>
+              <h4 class="title"><a href="">Ismael</a></h4>
+              <p class="description">I: Inicial del colaborador Ismael</p>
+              <br>
+               <div align="center">
+              <button onclick="command('i')" type="button" class="btn btn-outline-primary">Mostrar</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-3 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="200">
+            <div class="icon-box icon-box-blue">
+              <div class="icon"><i class="bx bxl-dailymotion"></i></div>
+              <h4 class="title"><a href="">Dylan</a></h4>
+              <p class="description">D: Inicial del colaborador Dylan</p>
+              <br>
+               <div align="center">
+              <button onclick="command('t')" type="button" class="btn btn-outline-primary">Mostrar</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-3 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="200">
+            <div class="icon-box icon-box-blue">
+              <div class="icon"><i class="bx bxl-stripe"></i></div>
+              <h4 class="title"><a href="">Salomon</a></h4>
+              <p class="description">S: Inicial del colaborador Salomon</p>
+              <br>
+               <div align="center">
+              <button onclick="command('q')" type="button" class="btn btn-outline-primary">Mostrar</button>
+              </div>
+            </div>
+          </div>
+
+      </div>
+    </section><!-- End Services Section -->
+
+   
+
+    <!-- ======= Service Details Section ======= -->
+    <section class="service-details">
+      <div class="container">
+
+        <div class="row">
+          <div class="col-md-4 d-flex align-items-stretch" data-aos="fade-up">
+            <div class="card">
+              <div class="card-img">
+                <img src="assets/img/isma.jpeg" alt="...">
+              </div>
+              <div class="card-body">
+                <h5 class="card-title"><a href="#">Ismael Méndez</a></h5>
+                <p class="card-text">Colaborador de NIDS Cube encargado del desarrollo de la arquitectura de hardware y programación</p>
+                <div class="read-more"><a href="#"><i class="icofont-arrow-right"></i>ismael.mendez@alumno.buap.mx</a></div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 d-flex align-items-stretch" data-aos="fade-up">
+            <div class="card">
+              <div class="card-img">
+                <img src="assets/img/este.jpg" alt="...">
+              </div>
+              <div class="card-body">
+                <h5 class="card-title"><a href="#">Dylan Lozada</a></h5>
+                <p class="card-text">Colaborador de NIDS Cube encargado del desarrollo de la página web para la interacción usuario con el sistema</p>
+                <div class="read-more"><a href="#"><i class="icofont-arrow-right"></i>dylan.lozada@alumno.buap.mx</a></div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 d-flex align-items-stretch" data-aos="fade-up">
+            <div class="card">
+              <div class="card-img">
+                <img src="assets/img/nancy.jpeg" alt="...">
+              </div>
+              <div class="card-body">
+                <h5 class="card-title"><a href="#">Nancy Pérez</a></h5>
+                <p class="card-text">Colaboradora de NIDS Cube encargada de la documentación del presente proyecto</p>
+                <div class="read-more"><a href="#"><i class="icofont-arrow-right"></i>nancy.perez@alumno.buap.mx</a></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section><!-- End Service Details Section -->
+
+
+  </main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer" data-aos="fade-up" data-aos-easing="ease-in-out" data-aos-duration="500">
+
+    <div class="footer-newsletter">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12">
+            <center>
+            <h4>Contactanos</h4>
+            <p>¿Tienes alguna duda, sugerencia o comentario?, puedes contactarnos y nosotros con gusto te atendemos</p>
+          </center>
+          </div>
+          
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="container">
+      <div class="copyright">
+        &copy; Copyright <strong><span>Dylan Lozada</span></strong>.
+      </div>
+      <div class="credits">
+        
+        Diseñado por <a href="https://dyan.lozada@alumno.buap.mx/">Dylan Lozada</a>
+      </div>
+    </div>
+  </footer><!-- End Footer -->
+
+  <a href="#" class="back-to-top"><i class="icofont-simple-up"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="assets/vendor/jquery/jquery.min.js"></script>
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/jquery.easing/jquery.easing.min.js"></script>
+  <script src="assets/vendor/php-email-form/validate.js"></script>
+  <script src="assets/vendor/venobox/venobox.min.js"></script>
+  <script src="assets/vendor/waypoints/jquery.waypoints.min.js"></script>
+  <script src="assets/vendor/counterup/counterup.min.js"></script>
+  <script src="assets/vendor/owl.carousel/owl.carousel.min.js"></script>
+  <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="assets/vendor/aos/aos.js"></script>
+
+  <!-- Template Main JS File -->
+  <script src="assets/js/main.js"></script>
+
+</body>
+
+</html>
