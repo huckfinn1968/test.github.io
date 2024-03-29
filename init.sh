@@ -9,6 +9,7 @@ sudo apt-get install git
 mkdir Tools
 mkdir Environments
 mkdir Platforms
+mkdir VPN
 cd Platforms
 mkdir HTB
 mkdir THM
