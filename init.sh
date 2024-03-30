@@ -27,3 +27,11 @@ sudo apt-get install apktool -y
 sudo apt install jd-gui -y
 sudo apt install jadx -y
 pip install urllib3==1.25.11
+wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/sublimehq-archive.gpg > /dev/null
+echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list
+sudo apt-get update -y
+sudo apt-get install apt-transport-https -y
+sudo apt-get install sublime-text -y
+wget https://vscode.download.prss.microsoft.com/dbazure/download/stable/863d2581ecda6849923a2118d93a088b0745d9d6/code_1.87.2-1709912201_amd64.deb
+sudo dpkg -i code_1.87.2-1709912201_amd64.deb
+
