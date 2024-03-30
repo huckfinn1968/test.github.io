@@ -26,4 +26,4 @@ cd ..
 sudo apt-get install apktool -y
 sudo apt install jd-gui -y
 sudo apt install jadx -y
-
+pip install urllib3==1.25.11
