@@ -16,7 +16,8 @@ mkdir THM
 mkdir echoCTF
 mkdir Offensive
 cd ..
-mkdir Courser
+mkdir Courses
+mkdir Exams
 mkdir MASA
 cd MASA
 git clone https://github.com/MobSF/Mobile-Security-Framework-MobSF.git
