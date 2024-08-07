@@ -37,3 +37,5 @@ wget https://vscode.download.prss.microsoft.com/dbazure/download/stable/863d2581
 sudo dpkg -i code_1.87.2-1709912201_amd64.deb
 sudo apt-get install ascii -y 
 chmod 0755 /usr/bin/pkexec
+
+
