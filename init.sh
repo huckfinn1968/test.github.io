@@ -36,3 +36,4 @@ sudo apt-get install sublime-text -y
 wget https://vscode.download.prss.microsoft.com/dbazure/download/stable/863d2581ecda6849923a2118d93a088b0745d9d6/code_1.87.2-1709912201_amd64.deb
 sudo dpkg -i code_1.87.2-1709912201_amd64.deb
 sudo apt-get install ascii -y 
+chmod 0755 /usr/bin/pkexec
