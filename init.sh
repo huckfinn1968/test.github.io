@@ -39,4 +39,10 @@ sudo apt-get install ascii -y
 chmod 0755 /usr/bin/pkexec
 cd /usr/share/wordlists
 gzip -d rockyou.txt.gz
+curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
+export PYENV_ROOT="$HOME/.pyenv"
+[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
+echo "eval \"$(pyenv virtualenv-init -)\"" >> ~/.bashrc
+
 
