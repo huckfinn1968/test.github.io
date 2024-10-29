@@ -5,7 +5,8 @@ sudo apt-get install gobuster -y
 sudo apt-get install dirsearch -y
 sudo apt-get install neo4j -y
 sudo apt-get install bloodhound -y
-sudo apt-get install git
+sudo apt-get install git -y
+sudo apt install bzip2 libbz2-dev -y
 mkdir Tools
 mkdir Environments
 mkdir Platforms
