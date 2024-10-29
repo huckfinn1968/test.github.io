@@ -7,6 +7,10 @@ sudo apt-get install neo4j -y
 sudo apt-get install bloodhound -y
 sudo apt-get install git -y
 sudo apt install bzip2 libbz2-dev -y
+sudo apt install ghidra -y
+sudo apt-get install python3 python3-pip python3-dev git libssl-dev libffi-dev build-essential -y
+python3 -m pip install --upgrade pip
+python3 -m pip install --upgrade pwntools
 mkdir Tools
 mkdir Environments
 mkdir Platforms
