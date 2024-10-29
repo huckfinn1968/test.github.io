@@ -9,6 +9,7 @@ sudo apt-get install git -y
 sudo apt install bzip2 libbz2-dev -y
 sudo apt install ghidra -y
 sudo apt-get install python3 python3-pip python3-dev git libssl-dev libffi-dev build-essential -y
+sudo apt install libreadline-dev -y
 python3 -m pip install --upgrade pip
 python3 -m pip install --upgrade pwntools
 mkdir Tools
