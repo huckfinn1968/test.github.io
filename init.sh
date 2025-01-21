@@ -1,4 +1,4 @@
-sudo apt-get update -y && sudo apt-get upgrade -y
+sudo apt-get update -y
 sudo apt-get install seclists -y
 sudo apt-get install dirbuster -y 
 sudo apt-get install gobuster -y
