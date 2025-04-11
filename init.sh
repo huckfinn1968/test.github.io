@@ -28,7 +28,7 @@ mkdir Exams
 mkdir MASA
 echo "docker pull opensecurity/mobile-security-framework-mobsf:latest" > ./MASA/init.sh
 echo "docker run -it --rm -p 8000:8000 opensecurity/mobile-security-framework-mobsf:latest" >> ./MASA/init.sh
-echo "# Default username and password: mobsf/mobsf" ./MASA/init.sh
+echo "# Default username and password: mobsf/mobsf" >> ./MASA/init.sh
 cd MASA
 git clone https://github.com/MobSF/Mobile-Security-Framework-MobSF.git
 git clone https://github.com/corpnewt/ProperTree.git
