@@ -11,6 +11,8 @@ sudo apt-get install ghidra -y
 sudo apt-get install python3 python3-pip python3-dev git libssl-dev libffi-dev build-essential -y
 sudo apt-get install libsqlite3-dev libssl-dev -y
 sudo apt-get install libreadline-dev -y
+sudo apt install build-essential curl file git -y
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 python3 -m pip install --upgrade pip
 python3 -m pip install --upgrade pwntools
 mkdir Tools
